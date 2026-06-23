@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../models/kanji.dart';
 import '../theme/app_colors.dart';
+import 'quiz_imi_screen.dart';
+import 'quiz_yomi_screen.dart';
 
 class KanjiDetailScreen extends StatelessWidget {
   final Kanji kanji;
@@ -60,14 +62,28 @@ class KanjiDetailScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QuizImiScreen(kanji: kanji),
+                        ),
+                      );
+                    },
                     child: const Text('IMI'),
                   ),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QuizYomiScreen(kanji: kanji),
+                        ),
+                      );
+                    },
                     child: const Text('YOMI'),
                   ),
                 ),
