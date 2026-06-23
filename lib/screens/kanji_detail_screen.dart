@@ -3,6 +3,7 @@ import '../models/kanji.dart';
 import '../theme/app_colors.dart';
 import 'quiz_imi_screen.dart';
 import 'quiz_yomi_screen.dart';
+import 'quiz_kaki_screen.dart';
 
 class KanjiDetailScreen extends StatelessWidget {
   final Kanji kanji;
@@ -90,7 +91,16 @@ class KanjiDetailScreen extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => QuizKakiScreen(
+        kanji: kanji,
+      ),
+    ),
+  );
+},
                     child: const Text('KAKI'),
                   ),
                 ),
