@@ -18,7 +18,7 @@ class QuizKakiScreen extends StatefulWidget {
 
 class _QuizKakiScreenState extends State<QuizKakiScreen> {
   final SignatureController controller = SignatureController(
-    penStrokeWidth: 4,
+    penStrokeWidth: 5,
     penColor: Colors.black,
   );
 
@@ -32,6 +32,14 @@ class _QuizKakiScreenState extends State<QuizKakiScreen> {
     controller.clear();
   }
 
+  void finishWriting() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Latihan tulis selesai.'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,10 +48,7 @@ class _QuizKakiScreenState extends State<QuizKakiScreen> {
         backgroundColor: AppColors.primaryBlue,
         title: const Text(
           'KUIS : KAKI',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -55,59 +60,52 @@ class _QuizKakiScreenState extends State<QuizKakiScreen> {
             Text(
               widget.kanji.character,
               style: const TextStyle(
-                fontSize: 90,
+                fontSize: 76,
                 fontWeight: FontWeight.bold,
-                color: Colors.grey,
               ),
             ),
-
-            const SizedBox(height: 10),
-
-            const Text(
-              'Tulislah kanji ini',
-              style: TextStyle(fontSize: 18),
+            const SizedBox(height: 4),
+            Text(
+              '${widget.kanji.kunyomi} / ${widget.kanji.meaning}',
+              style: const TextStyle(fontSize: 16),
             ),
-
-            const SizedBox(height: 20),
+            const SizedBox(height: 18),
 
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 2,
-                  ),
+                  border: Border.all(color: Colors.black87, width: 2),
                 ),
-                child: Signature(
-                  controller: controller,
-                  backgroundColor: Colors.white,
+                child: Stack(
+                  children: [
+                    CustomPaint(
+                      painter: KanjiGuidePainter(),
+                      child: Container(),
+                    ),
+                    Signature(
+                      controller: controller,
+                      backgroundColor: Colors.transparent,
+                    ),
+                  ],
                 ),
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 18),
 
             Row(
               children: [
                 Expanded(
-                  child: ElevatedButton(
+                  child: OutlinedButton(
                     onPressed: clearCanvas,
                     child: const Text('HAPUS'),
                   ),
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Jawaban tersimpan.',
-                          ),
-                        ),
-                      );
-                    },
+                    onPressed: finishWriting,
                     child: const Text('SELESAI'),
                   ),
                 ),
@@ -117,5 +115,50 @@ class _QuizKakiScreenState extends State<QuizKakiScreen> {
         ),
       ),
     );
+  }
+}
+
+class KanjiGuidePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint borderPaint = Paint()
+      ..color = Colors.grey.shade400
+      ..strokeWidth = 1;
+
+    final Paint centerPaint = Paint()
+      ..color = Colors.grey.shade300
+      ..strokeWidth = 1;
+
+    final double centerX = size.width / 2;
+    final double centerY = size.height / 2;
+
+    canvas.drawLine(
+      Offset(centerX, 0),
+      Offset(centerX, size.height),
+      centerPaint,
+    );
+
+    canvas.drawLine(
+      Offset(0, centerY),
+      Offset(size.width, centerY),
+      centerPaint,
+    );
+
+    canvas.drawLine(
+      Offset(0, 0),
+      Offset(size.width, size.height),
+      borderPaint,
+    );
+
+    canvas.drawLine(
+      Offset(size.width, 0),
+      Offset(0, size.height),
+      borderPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }
