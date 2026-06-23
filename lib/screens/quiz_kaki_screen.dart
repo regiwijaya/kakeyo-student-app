@@ -4,6 +4,8 @@ import 'package:signature/signature.dart';
 import '../models/kanji.dart';
 import '../theme/app_colors.dart';
 
+import 'result_screen.dart';
+
 class QuizKakiScreen extends StatefulWidget {
   final Kanji kanji;
 
@@ -33,12 +35,17 @@ class _QuizKakiScreenState extends State<QuizKakiScreen> {
   }
 
   void finishWriting() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Latihan tulis selesai.'),
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => const ResultScreen(
+        title: 'Latihan Selesai',
+        message: 'Tulisan sudah selesai. Nanti fitur penilaian tulisan akan ditambahkan.',
+        isSuccess: true,
       ),
-    );
-  }
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
